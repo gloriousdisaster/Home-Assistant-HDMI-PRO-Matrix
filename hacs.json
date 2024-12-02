@@ -1,9 +1,3 @@
 {
-  "name": "Gofanco Prophecy HDMI Matrix",
-  "content_in_root": false,
-  "domain": "hdmi_switcher",
-  "iot_class": "local_polling",
-  "filename": "custom_components/hdmi_switcher/manifest.json",
-  "homeassistant": "2023.1.0",
-  "render_readme": true
+  "name": "Gofanco Prophecy HDMI Matrix"
 }
