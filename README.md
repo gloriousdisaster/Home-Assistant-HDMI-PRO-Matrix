@@ -13,8 +13,8 @@ This is my first attempt at creating a Home Assistant (HA) integration. I relied
 
 ![Home Assistant](https://img.shields.io/badge/Home%20Assistant-Custom%20Component-blue)
 ![HACS](https://img.shields.io/badge/HACS-Integration-green)
-![Last Commit](https://img.shields.io/github/last-commit/gloriousdisaster/Home-Assistant-HDMI-PRO-Matrix-Alpha)
-[![License](https://img.shields.io/github/license/gloriousdisaster/Home-Assistant-HDMI-PRO-Matrix-Alpha.svg)](LICENSE)
+![GitHub Release](https://img.shields.io/github/v/release/gloriousdisaster/Home-Assistant-HDMI-PRO-Matrix)
+![GitHub License](https://img.shields.io/github/license/gloriousdisaster/Home-Assistant-HDMI-PRO-Matrix)
 ![Maintenance](https://img.shields.io/maintenance/Minimally/2024)
 
 ---
