@@ -135,6 +135,40 @@ curl --http0.9 -X POST "http://IP-ADDRESS/inform.cgi?undefined" \
 
 Replace IP-ADDRESS with your device’s actual IP.
 
+### More POST Information
+
+A "param1" response will look something like this.
+
+```text
+{"out1":"1","out2":"2","out3":"4","out4":"0","namein1":"AVR","namein2":"Xbox","namein3":"PiKVM","namein4":"Aux","nameout1":"TV","nameout2":"Disp2","nameout3":"Dsp3","nameout4":"Dsp4","powstatus":"1"}%
+```
+
+#### Payloads
+
+- Outputs [o] [1-5]
+- Inputs [i] [0-4]
+- Output 0 = Mute
+- Maps [m [1-8]] (Consider maps to be presets for multiple I/O settings)
+
+| Payload           | Response           | Description                                |
+| ----------------- | ------------------ | ------------------------------------------ |
+| "param1":"1"      |                    | Gets I/O Assessments & Names, Power Status |
+|                   | "out[o]":"[i]      | Output to Input                            |
+|                   | "namein[i]":"[n]"  | Input Name                                 |
+|                   | "nameout[o]":"[n]" | Output Name                                |
+|                   | "powstatus":"[v]"  | Power Status (Values 1=on 0=off)           |
+| out[o]: [i]       |                    | Assigns [o] Output to [i] input            |
+| "outa":"[i]"      |                    | Assigns All Output to [i]                  |
+| "namein[i]":"[n]" |                    | Assign Input Friendly Name                 |
+| "nameout[o]":[n]" |                    | Assign Output                              |
+| mname[m]?[n]      |                    | Assigns Map Friendly Name                  |
+| poweroon          |                    | Power On Action                            |
+| poweroff          |                    | Power Off Action                           |
+| LOADNAME:         |                    | Get I/O Names                              |
+| LOADMAP:          |                    | Get Map Names                              |
+| save: [m]         |                    | Save Map (I/O Presets)                     |
+| call: [m]         |                    | Calls Map (I/O Presets)                    |
+
 ## Known Issues
 
 - Known Issues
