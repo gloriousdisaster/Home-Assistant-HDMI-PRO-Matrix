@@ -67,8 +67,8 @@ Not familiar with HACS? Check out their [documentation](https://hacs.xyz/) for g
 1. Navigate to your Home Assistant configuration directory (where `configuration.yaml` resides).
 2. Create a `custom_components` folder if it doesn’t exist.
 3. Inside `custom_components`, create a folder named `hdmi_switcher`.
-4. Download the files from this repository’s `custom_components/switcher/` directory.
-5. Place the downloaded files into your `hdmi_switch` folder.
+4. Download the files from this repository’s `custom_components/hdmi_switcher/` directory.
+5. Place the downloaded files into your `hdmi_switcher` folder.
 6. Restart Home Assistant.
 7. Add the integration in the Home Assistant UI as described above.
 
