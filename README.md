@@ -4,7 +4,7 @@
 
 This is a custom integration for Home Assistant that allows you to control your Gofanco Prophecy 4x4 HDMI Matrix **PRO-Matrix44-SC**.
 
----
+![Company Icon](logos/icon.png)
 
 ## Disclaimer
 
