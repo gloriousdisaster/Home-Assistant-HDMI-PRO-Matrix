@@ -11,6 +11,8 @@ This is a custom integration for Home Assistant that allows you to control your 
 I am not a programmer—just a Glorious Disaster!  
 This is my first attempt at creating a Home Assistant (HA) integration. I relied heavily on ChatGPT-4 o1 (Preview) and Claude 3.5 (Sonnet Preview) for assistance in generating and debugging the code.
 
+---
+
 ![Home Assistant](https://img.shields.io/badge/Home%20Assistant-Custom%20Component-blue)
 ![HACS](https://img.shields.io/badge/HACS-Integration-green)
 ![GitHub Release](https://img.shields.io/github/v/release/gloriousdisaster/Home-Assistant-HDMI-PRO-Matrix)
