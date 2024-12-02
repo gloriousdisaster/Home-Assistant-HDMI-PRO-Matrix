@@ -13,8 +13,8 @@ This is my first attempt at creating a Home Assistant (HA) integration. I relied
 
 ![Home Assistant](https://img.shields.io/badge/Home%20Assistant-Custom%20Component-blue)
 ![HACS](https://img.shields.io/badge/HACS-Integration-green)
-![Last Commit](https://img.shields.io/github/last-commit/gloriousdisaster/Home-Assistant-Device-PRO-Matrix44-SC-Alpha)
-[![License](https://img.shields.io/github/license/gloriousdisaster/Home-Assistant-Device-PRO-Matrix44-SC-Alpha.svg)](LICENSE)
+![Last Commit](https://img.shields.io/github/last-commit/gloriousdisaster/Home-Assistant-HDMI-PRO-Matrix-Alpha)
+[![License](https://img.shields.io/github/license/gloriousdisaster/Home-Assistant-HDMI-PRO-Matrix-Alpha.svg)](LICENSE)
 ![Maintenance](https://img.shields.io/maintenance/Minimally/2024)
 
 ---
@@ -138,7 +138,7 @@ Replace IP-ADDRESS with your device’s actual IP.
 ## Known Issues
 
 - Known Issues
-  This integration may have bugs (I’m still discovering them). Feel free to [report issues](https://github.com/loriousdisaster/Home-Assistant-Device-PRO-Matrix44-SC-Alpha/issues).
+  This integration may have bugs (I’m still discovering them). Feel free to [report issues](https://github.com/loriousdisaster/Home-Assistant-HDMI-PRO-Matrix-Alpha/issues).
 
 ---
 
