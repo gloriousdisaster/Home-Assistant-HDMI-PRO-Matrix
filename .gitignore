@@ -3,7 +3,7 @@ ignore/
 testing/
 .pylintrc
 pyproject.toml
-
+.DS_Store
 *vscode*
 
 
