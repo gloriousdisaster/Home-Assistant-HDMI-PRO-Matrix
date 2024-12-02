@@ -4,9 +4,10 @@
   "codeowners": ["@gloriousdisaster"],
   "config_flow": true,
   "dependencies": [],
-  "documentation": "https://github.com/gloriousdisaster/Home-Assistant-Device-PRO-Matrix44-SC-Alpha/tree/v1.0.1",
+  "documentation": "https://github.com/gloriousdisaster/Home-Assistant-HDMI-PRO-Matrix",
   "integration_type": "device",
   "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/gloriousdisaster/Home-Assistant-HDMI-PRO-Matrix/issues",
   "requirements": [],
-  "version": "0.0.1"
+  "version": "1.0.0"
 }
