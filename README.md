@@ -113,7 +113,7 @@ The PRO-Matrix44-SC uses an embedded web server with HTTP 0.9. I reverse-enginee
 
 ## Example Usage with `curl`
 
-### Retrieve All Parameters
+### Retrieve General Parameters
 
 The following `curl` command retrieves all available parameters from the device:
 
