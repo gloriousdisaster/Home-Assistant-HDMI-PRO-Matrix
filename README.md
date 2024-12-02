@@ -1,7 +1,5 @@
 # Gofanco Prophecy 4x4 HDMI Matrix (PRO-Matrix44-SC) Home Assistant Integration
 
-**NOT READY**
-
 This is a custom integration for Home Assistant that allows you to control your Gofanco Prophecy 4x4 HDMI Matrix **PRO-Matrix44-SC**.
 
 ![Company Icon](logos/icon.png)
@@ -50,7 +48,7 @@ This integration allows you to control your **PRO-Matrix44-SC HDMI Matrix** dire
 
 ## Installation
 
-### Installation via HACS (Recommended)
+### Installation via HACS (Recommended) - Not in store yet.
 
 **This is a placeholder**
 
@@ -59,7 +57,7 @@ This integration allows you to control your **PRO-Matrix44-SC HDMI Matrix** dire
 3. Restart Home Assistant (yes, this step is important).
 4. Add the integration in Home Assistant:
    - Go to **Settings** > **Integrations** > **Add Integration**.
-   - Search for `HDMI Matrix`.
+   - Search for `HDMI Switcher`.
    - Enter your device’s IP address.
 
 Not familiar with HACS? Check out their [documentation](https://hacs.xyz/) for guidance.
@@ -68,9 +66,9 @@ Not familiar with HACS? Check out their [documentation](https://hacs.xyz/) for g
 
 1. Navigate to your Home Assistant configuration directory (where `configuration.yaml` resides).
 2. Create a `custom_components` folder if it doesn’t exist.
-3. Inside `custom_components`, create a folder named `hdmi_matrix`.
-4. Download the files from this repository’s `custom_components/hdmi_matrix/` directory.
-5. Place the downloaded files into your `hdmi_matrix` folder.
+3. Inside `custom_components`, create a folder named `hdmi_switcher`.
+4. Download the files from this repository’s `custom_components/switcher/` directory.
+5. Place the downloaded files into your `hdmi_switch` folder.
 6. Restart Home Assistant.
 7. Add the integration in the Home Assistant UI as described above.
 
@@ -140,7 +138,10 @@ Replace IP-ADDRESS with your device’s actual IP.
 ## Known Issues
 
 - Known Issues
-  This integration may have bugs (I’m still discovering them). Feel free to [report issues](https://github.com/loriousdisaster/Home-Assistant-HDMI-PRO-Matrix-Alpha/issues).
+
+  - This integration may have bugs (I’m still discovering them).
+  - When adding the device, there is no current checks in place if you were to enter an incorrect IP address. The device will be created, but the entities will not function.
+  - Feel free to [report issues](https://github.com/loriousdisaster/Home-Assistant-HDMI-PRO-Matrix-Alpha/issues).
 
 ---
 
