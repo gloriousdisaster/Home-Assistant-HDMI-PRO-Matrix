@@ -115,7 +115,7 @@ The PRO-Matrix44-SC uses an embedded web server with HTTP 0.9. I reverse-enginee
 
 ### Retrieve General Parameters
 
-The following `curl` command retrieves all available parameters from the device:
+The following `curl` command retrieves general available parameters from the device:
 
 ```bash
 curl --http0.9 -X POST "http://IP-ADDRESS/inform.cgi?undefined" \
@@ -158,7 +158,7 @@ A "param1" response will look something like this.
 |                   | "nameout[o]":"[n]" | Output Name                                |
 |                   | "powstatus":"[v]"  | Power Status (Values 1=on 0=off)           |
 | out[o]: [i]       |                    | Assigns [o] Output to [i] input            |
-| "outa":"[i]"      |                    | Assigns All Output to [i]                  |
+| "outa":"[i]"      |                    | Assigns All Outputs to [i]                 |
 | "namein[i]":"[n]" |                    | Assign Input Friendly Name                 |
 | "nameout[o]":[n]" |                    | Assign Output                              |
 | mname[m]?[n]      |                    | Assigns Map Friendly Name                  |
