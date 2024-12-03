@@ -1,0 +1,13 @@
+{
+  "domain": "hdmi_switcher",
+  "name": "HDMI Switcher",
+  "codeowners": ["@gloriousdisaster"],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/gloriousdisaster/Home-Assistant-HDMI-PRO-Matrix",
+  "integration_type": "device",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/gloriousdisaster/Home-Assistant-HDMI-PRO-Matrix/issues",
+  "requirements": [],
+  "version": "1.0.0"
+}
