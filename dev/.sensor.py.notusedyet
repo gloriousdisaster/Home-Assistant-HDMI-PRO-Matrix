@@ -1,0 +1,173 @@
+"""
+HDMI Switcher Sensor Entities.
+
+This module defines the sensor entities for the HDMI Switcher integration,
+allowing users to view input/output names.
+"""
+
+import logging
+from homeassistant.components.sensor import SensorEntity
+from homeassistant.helpers.device_registry import DeviceInfo
+from homeassistant.helpers.entity import EntityCategory
+from homeassistant.core import HomeAssistant
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from .const import DOMAIN, MANUFACTURER, MODEL
+
+_LOGGER = logging.getLogger(__name__)
+
+
+async def async_setup_entry(
+    hass: HomeAssistant,
+    entry: ConfigEntry,
+    async_add_entities: AddEntitiesCallback,
+) -> None:
+    """Set up HDMI Switcher sensor entities from a config entry."""
+    data_handler = hass.data[DOMAIN][entry.entry_id]["data_handler"]
+
+    # Create sensor entities for input/output names
+    sensor_entities = []
+
+    # Input name sensors
+    for input_num in range(1, 5):
+        input_name_sensor = HDMISwitcherInputNameSensor(
+            hass, data_handler, input_num, entry.entry_id
+        )
+        sensor_entities.append(input_name_sensor)
+
+    # Output name sensors
+    for output_num in range(1, 5):
+        output_name_sensor = HDMISwitcherOutputNameSensor(
+            hass, data_handler, output_num, entry.entry_id
+        )
+        sensor_entities.append(output_name_sensor)
+
+    # New name sensor
+    new_name_sensor = HDMISwitcherNewNameSensor(hass, entry.entry_id)
+    sensor_entities.append(new_name_sensor)
+
+    # Store references
+    hass.data[DOMAIN][entry.entry_id]["sensor_entities"] = sensor_entities
+    hass.data[DOMAIN][entry.entry_id][
+        "new_name_sensor_entity"
+    ] = new_name_sensor
+
+    # Add entities to Home Assistant
+    async_add_entities(sensor_entities, True)
+
+
+class HDMISwitcherNewNameSensor(SensorEntity):
+    """Sensor entity for displaying a new name."""
+
+    def __init__(self, hass: HomeAssistant, entry_id) -> None:
+        """Initialize the new name sensor."""
+        self.hass = hass
+        self.entry_id = entry_id
+        self._attr_name = "Enter New Name"
+        self._attr_unique_id = f"{DOMAIN}_new_name_sensor_{entry_id}"
+        self._attr_native_value = ""
+        self._attr_icon = "mdi:rename-box"
+        self._attr_device_class = None  # Define if applicable
+        self._attr_entity_category = EntityCategory.CONFIG
+
+    async def async_update(self):
+        """Update the sensor state."""
+        data_handler = self.hass.data[DOMAIN][self.entry_id]["data_handler"]
+        self._attr_native_value = data_handler.new_name or ""
+
+    @property
+    def device_info(self):
+        """Return device information about this HDMI Switcher."""
+        data_handler = self.hass.data[DOMAIN][self.entry_id]["data_handler"]
+        return DeviceInfo(
+            identifiers={
+                (DOMAIN, f"{data_handler.host}:{data_handler.port}")
+            },
+            name=f"HDMI Switcher ({data_handler.host})",
+            manufacturer=MANUFACTURER,
+            model=MODEL,
+        )
+
+
+class HDMISwitcherInputNameSensor(SensorEntity):
+    """Sensor entity for an HDMI Switcher input name."""
+
+    def __init__(
+        self, hass: HomeAssistant, data_handler, input_num, entry_id
+    ) -> None:
+        """Initialize the input name sensor."""
+        self.hass = hass
+        self.data_handler = data_handler
+        self.input_num = input_num
+        self.entry_id = entry_id
+        self._attr_name = f"Input {input_num} Name"
+        self._attr_unique_id = f"{DOMAIN}_{data_handler.host}_{data_handler.port}_input_{input_num}_name_sensor"
+        self._attr_native_value = data_handler.input_names.get(
+            str(input_num), f"Input {input_num}"
+        )
+        self._attr_icon = "mdi:rename-box"
+        self._attr_device_class = None  # Define if applicable
+        self._attr_entity_category = EntityCategory.CONFIG
+
+    async def async_update(self):
+        """Fetch new state data for the sensor."""
+        # Update data from the device
+        await self.hass.async_add_executor_job(self.data_handler.update)
+        # Update the native value
+        self._attr_native_value = self.data_handler.input_names.get(
+            str(self.input_num), f"Input {self.input_num}"
+        )
+
+    @property
+    def device_info(self):
+        """Return device information about this HDMI Switcher."""
+        return DeviceInfo(
+            identifiers={
+                (DOMAIN, f"{self.data_handler.host}:{self.data_handler.port}")
+            },
+            name=f"HDMI Switcher ({self.data_handler.host})",
+            manufacturer=MANUFACTURER,
+            model=MODEL,
+        )
+
+
+class HDMISwitcherOutputNameSensor(SensorEntity):
+    """Sensor entity for an HDMI Switcher output name."""
+
+    def __init__(
+        self, hass: HomeAssistant, data_handler, output_num, entry_id
+    ) -> None:
+        """Initialize the output name sensor."""
+        self.hass = hass
+        self.data_handler = data_handler
+        self.output_num = output_num
+        self.entry_id = entry_id
+        self._attr_name = f"Output {output_num} Name"
+        self._attr_unique_id = f"{DOMAIN}_{data_handler.host}_{data_handler.port}_output_{output_num}_name_sensor"
+        self._attr_native_value = self.data_handler.output_names.get(
+            str(output_num), f"Output {output_num}"
+        )
+        self._attr_icon = "mdi:rename-box"
+        self._attr_device_class = None  # Define if applicable
+        self._attr_entity_category = EntityCategory.CONFIG
+
+    async def async_update(self):
+        """Fetch new state data for the sensor."""
+        # Update data from the device
+        await self.hass.async_add_executor_job(self.data_handler.update)
+        # Update the native value
+        self._attr_native_value = self.data_handler.output_names.get(
+            str(self.output_num), f"Output {self.output_num}"
+        )
+
+    @property
+    def device_info(self):
+        """Return device information about this HDMI Switcher."""
+        return DeviceInfo(
+            identifiers={
+                (DOMAIN, f"{self.data_handler.host}:{self.data_handler.port}")
+            },
+            name=f"HDMI Switcher ({self.data_handler.host})",
+            manufacturer=MANUFACTURER,
+            model=MODEL,
+        )

@@ -1,0 +1,272 @@
+# text.py
+"""
+HDMI Switcher Text Entities.
+
+This module defines the text entities for the HDMI Switcher integration,
+allowing users to view and modify input/output names.
+"""
+
+import logging
+from homeassistant.components.text import TextEntity
+from homeassistant.helpers.device_registry import DeviceInfo
+from homeassistant.helpers.entity import EntityCategory
+from homeassistant.core import HomeAssistant
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.util.async_ import run_callback_threadsafe
+from .const import DOMAIN, MANUFACTURER, MODEL
+
+_LOGGER = logging.getLogger(__name__)
+
+
+async def async_setup_entry(
+    hass: HomeAssistant,
+    entry: ConfigEntry,
+    async_add_entities: AddEntitiesCallback,
+) -> None:
+    """Set up HDMI Switcher text entities from a config entry."""
+    data_handler = hass.data[DOMAIN][entry.entry_id]["data_handler"]
+
+    # Create text entities for input/output names
+    text_entities = []
+
+    # Existing input and output name text entities
+    for input_num in range(1, 5):
+        input_name_entity = HDMISwitcherInputNameText(
+            hass, data_handler, input_num, entry.entry_id
+        )
+        text_entities.append(input_name_entity)
+
+    for output_num in range(1, 5):
+        output_name_entity = HDMISwitcherOutputNameText(
+            hass, data_handler, output_num, entry.entry_id
+        )
+        text_entities.append(output_name_entity)
+
+    # New Name text entity
+    new_name_text = HDMISwitcherNewNameText(hass, entry.entry_id)
+    text_entities.append(new_name_text)
+
+    # Store references
+    hass.data[DOMAIN][entry.entry_id]["text_entities"] = text_entities
+    hass.data[DOMAIN][entry.entry_id]["new_name_text_entity"] = new_name_text
+
+    # Add entities to Home Assistant
+    async_add_entities(text_entities, True)
+
+
+class HDMISwitcherNewNameText(TextEntity):
+    """Text entity for entering a new name."""
+
+    def __init__(self, hass: HomeAssistant, entry_id) -> None:
+        """Initialize the new name text entity."""
+        self.hass = hass
+        self.entry_id = entry_id
+        self._attr_name = "Enter New Name"
+        self._attr_unique_id = f"{DOMAIN}_new_name_text_{entry_id}"
+        self._attr_native_value = ""
+        self._attr_icon = "mdi:rename-box"
+        self._attr_native_max = 7  # Max 7 characters as per device limitation
+        self._attr_entity_category = EntityCategory.CONFIG
+
+    async def async_set_value(self, value: str) -> None:
+        """Set the new name value."""
+        self._attr_native_value = value[:7]
+        self.async_write_ha_state()
+
+    def set_value(self, value: str) -> None:
+        """Set the value synchronously."""
+        run_callback_threadsafe(
+            self.hass.loop, self.async_set_value, value
+        ).result()
+
+    async def async_update(self):
+        """Update the text entity."""
+        # No dynamic updates needed; method intentionally left empty
+
+    @property
+    def device_info(self):
+        """
+        Return device information about this HDMI Switcher
+        Since this entity doesn't have direct access to data_handler,
+        we can retrieve host and port from hass.data
+        """
+        data_handler = self.hass.data[DOMAIN][self.entry_id]["data_handler"]
+        return DeviceInfo(
+            identifiers={
+                (DOMAIN, f"{data_handler.host}:{data_handler.port}")
+            },
+            name=f"HDMI Switcher ({data_handler.host})",
+            manufacturer=MANUFACTURER,
+            model=MODEL,
+        )
+
+
+# pylint: disable=too-many-instance-attributes
+class HDMISwitcherInputNameText(TextEntity):
+    """Representation of an HDMI Switcher input name text entity."""
+
+    def __init__(
+        self, hass: HomeAssistant, data_handler, input_num, entry_id
+    ) -> None:
+        """Initialize the input name text entity."""
+        self.hass = hass
+        self.data_handler = data_handler
+        self.input_num = input_num
+        self.entry_id = entry_id
+        self._attr_name = f"Input {input_num} Name"
+        self._attr_unique_id = (
+            f"{DOMAIN}_{data_handler.host}_{data_handler.port}"
+            f"_input_{input_num}_name_text"
+        )
+        self._attr_native_value = data_handler.input_names.get(
+            str(input_num), f"Input {input_num}"
+        )
+        self._attr_icon = "mdi:rename-box"
+        self._attr_native_max = 7  # Max 7 characters as per device limitation
+        self._attr_entity_category = EntityCategory.CONFIG
+
+    async def async_set_value(self, value: str) -> None:
+        """Set the value of the input name."""
+        # Truncate value to max length
+        value = value[:7]
+        # Update the name in the data handler
+        self.data_handler.input_names[str(self.input_num)] = value
+        # Send the new names to the device
+        success = await self.hass.async_add_executor_job(
+            self.data_handler.set_names,
+            self.data_handler.input_names,
+            self.data_handler.output_names,
+        )
+        if success:
+            # Update the entity's state
+            self._attr_native_value = value
+            self.async_write_ha_state()
+            # Update select entities to reflect the new names
+            await self._update_select_entities()
+        else:
+            _LOGGER.error(
+                "Failed to set input %s name to '%s'", self.input_num, value
+            )
+
+    def set_value(self, value: str) -> None:
+        """Set the value synchronously."""
+        run_callback_threadsafe(
+            self.hass.loop, self.async_set_value, value
+        ).result()
+
+    async def async_update(self):
+        """Fetch new state data for the text entity."""
+        # Update data from the device
+        await self.hass.async_add_executor_job(self.data_handler.update)
+        # Update the native value
+        self._attr_native_value = self.data_handler.input_names.get(
+            str(self.input_num), f"Input {self.input_num}"
+        )
+
+    @property
+    def device_info(self):
+        """Return device information about this HDMI Switcher."""
+        return DeviceInfo(
+            identifiers={
+                (DOMAIN, f"{self.data_handler.host}:{self.data_handler.port}")
+            },
+            name=f"HDMI Switcher ({self.data_handler.host})",
+            manufacturer=MANUFACTURER,
+            model=MODEL,
+        )
+
+    async def _update_select_entities(self):
+        """Update select entities to reflect name changes."""
+        # Access select entities from hass.data
+        select_entities = self.hass.data[DOMAIN][self.entry_id].get(
+            "select_entities", []
+        )
+        for entity in select_entities:
+            await entity.async_update()
+            entity.async_write_ha_state()
+
+
+# pylint: disable=too-many-instance-attributes
+class HDMISwitcherOutputNameText(TextEntity):
+    """Representation of an HDMI Switcher output name text entity."""
+
+    def __init__(
+        self, hass: HomeAssistant, data_handler, output_num, entry_id
+    ) -> None:
+        """Initialize the output name text entity."""
+        self.hass = hass
+        self.data_handler = data_handler
+        self.output_num = output_num
+        self.entry_id = entry_id
+        self._attr_name = f"Output {output_num} Name"
+        self._attr_unique_id = (
+            f"{DOMAIN}_{data_handler.host}_{data_handler.port}_output_"
+            f"{output_num}_name_text"
+        )
+        self._attr_native_value = self.data_handler.output_names.get(
+            str(output_num), f"Output {output_num}"
+        )
+        self._attr_icon = "mdi:rename-box"
+        self._attr_native_max = 7  # Max 7 characters as per device limitation
+        self._attr_entity_category = EntityCategory.CONFIG
+
+    async def async_set_value(self, value: str) -> None:
+        """Set the value of the output name."""
+        # Truncate value to max length
+        value = value[:7]
+        # Update the name in the data handler
+        self.data_handler.output_names[str(self.output_num)] = value
+        # Send the new names to the device
+        success = await self.hass.async_add_executor_job(
+            self.data_handler.set_names,
+            self.data_handler.input_names,
+            self.data_handler.output_names,
+        )
+        if success:
+            # Update the entity's state
+            self._attr_native_value = value
+            self.async_write_ha_state()
+            # Update select entities to reflect the new names
+            await self._update_select_entities()
+        else:
+            _LOGGER.error(
+                "Failed to set output %s name to '%s'", self.output_num, value
+            )
+
+    def set_value(self, value: str) -> None:
+        """Set the value synchronously."""
+        run_callback_threadsafe(
+            self.hass.loop, self.async_set_value, value
+        ).result()
+
+    async def async_update(self):
+        """Fetch new state data for the text entity."""
+        # Update data from the device
+        await self.hass.async_add_executor_job(self.data_handler.update)
+        # Update the native value
+        self._attr_native_value = self.data_handler.output_names.get(
+            str(self.output_num), f"Output {self.output_num}"
+        )
+
+    @property
+    def device_info(self):
+        """Return device information about this HDMI Switcher."""
+        return DeviceInfo(
+            identifiers={
+                (DOMAIN, f"{self.data_handler.host}:{self.data_handler.port}")
+            },
+            name=f"HDMI Switcher ({self.data_handler.host})",
+            manufacturer=MANUFACTURER,
+            model=MODEL,
+        )
+
+    async def _update_select_entities(self):
+        """Update select entities to reflect name changes."""
+        # Access select entities from hass.data
+        select_entities = self.hass.data[DOMAIN][self.entry_id].get(
+            "select_entities", []
+        )
+        for entity in select_entities:
+            await entity.async_update()
+            entity.async_write_ha_state()
