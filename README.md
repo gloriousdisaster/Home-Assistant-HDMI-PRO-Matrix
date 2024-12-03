@@ -125,7 +125,7 @@ curl --http0.9 -X POST "http://IP-ADDRESS/inform.cgi?undefined" \
 
 ### Mute All Outputs (Set to Input 0)
 
-The following `curl` command sets all outputs to input 0, effectively muting the device:
+The following `curl` command sets all outputs to input 0, effectively muting all outputs on the device:
 
 ```bash
 curl --http0.9 -X POST "http://IP-ADDRESS/inform.cgi?undefined" \
@@ -135,7 +135,7 @@ curl --http0.9 -X POST "http://IP-ADDRESS/inform.cgi?undefined" \
 
 Replace IP-ADDRESS with your device’s actual IP.
 
-### More POST Information
+### More POST Payload Information
 
 A "param1" response will look something like this.
 
