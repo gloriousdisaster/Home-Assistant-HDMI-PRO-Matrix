@@ -148,7 +148,7 @@ A "param1" response will look something like this.
 - Outputs [o] [1-5]
 - Inputs [i] [0-4]
 - Output 0 = Mute
-- Maps [m [1-8]] (Consider maps to be presets for multiple I/O settings)
+- Maps [m] [1-8] (Maps are presets for multiple I/O settings)
 
 | Payload           | Response           | Description                                |
 | ----------------- | ------------------ | ------------------------------------------ |
@@ -175,7 +175,7 @@ A "param1" response will look something like this.
 
   - This integration may have bugs (I’m still discovering them).
   - When adding the device, there is no current checks in place if you were to enter an incorrect IP address. The device will be created, but the entities will not function.
-  - Feel free to [report issues](https://github.com/loriousdisaster/Home-Assistant-HDMI-PRO-Matrix-Alpha/issues).
+  - Feel free to [report issues](https://github.com/loriousdisaster/Home-Assistant-HDMI-PRO-Matrix/issues).
 
 ---
 
