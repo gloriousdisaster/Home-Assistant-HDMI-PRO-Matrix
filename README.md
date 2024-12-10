@@ -147,7 +147,7 @@ A "param1" response will look something like this.
 
 - Outputs [o] [1-5]
 - Inputs [i] [0-4]
-- Output 0 = Mute
+- Input 0 = Mute
 - Maps [m] [1-8] (Maps are presets for multiple I/O settings)
 
 | Payload           | Response           | Description                                |

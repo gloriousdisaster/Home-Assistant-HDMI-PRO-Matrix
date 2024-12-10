@@ -1,5 +1,5 @@
 {
-  "domain": "hdmi_switcher",
+  "domain": "gofanco_prophecy",
   "name": "HDMI Switcher",
   "codeowners": ["@gloriousdisaster"],
   "config_flow": true,
