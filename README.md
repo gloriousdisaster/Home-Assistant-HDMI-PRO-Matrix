@@ -175,6 +175,7 @@ A "param1" response will look something like this.
 
   - This integration may have bugs (I’m still discovering them).
   - When adding the device, there is no current checks in place if you were to enter an incorrect IP address. The device will be created, but the entities will not function.
+  - "Note: The HDMI Matrix is referred to as an HDMI Switch in some parts of the code; while technically a matrix, it functions as a switching device."
   - Feel free to [report issues](https://github.com/gloriousdisaster/Home-Assistant-HDMI-PRO-Matrix/issues).
 
 ---

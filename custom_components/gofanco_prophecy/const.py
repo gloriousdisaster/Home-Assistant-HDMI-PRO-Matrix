@@ -6,7 +6,7 @@ for the HDMI Switcher integration.
 """
 
 DEFAULT_PORT = 80
-DOMAIN = "hdmi_switcher"
+DOMAIN = "gofanco_prophecy"
 MANUFACTURER = "Gofanco Prophecy"
 MODEL = "PRO-Matrix44-SC"
 PLATFORMS = ["button", "select", "switch"]
