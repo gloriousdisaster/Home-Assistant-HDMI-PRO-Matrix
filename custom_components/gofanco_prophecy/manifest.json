@@ -1,6 +1,6 @@
 {
   "domain": "gofanco_prophecy",
-  "name": "HDMI Switcher",
+  "name": "HDMI Matrix 4x4",
   "codeowners": ["@gloriousdisaster"],
   "config_flow": true,
   "dependencies": [],

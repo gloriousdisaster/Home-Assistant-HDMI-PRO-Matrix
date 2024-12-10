@@ -6,8 +6,6 @@ This module defines the select entities for the HDMI Switcher integration,
 allowing users to select inputs for outputs and rename items.
 """
 
-# pylint: disable=duplicate-code
-
 import logging
 from homeassistant.components.select import SelectEntity
 from homeassistant.helpers.device_registry import DeviceInfo
@@ -43,9 +41,7 @@ async def async_setup_entry(
         output_selects.append(output_select)
 
     # 'Output All' select entity
-    output_all_select = HDMISwitcherOutputAllSelect(
-        hass, data_handler, entry.entry_id
-    )
+    output_all_select = HDMISwitcherOutputAllSelect(hass, data_handler, entry.entry_id)
     selects.append(output_all_select)
 
     # # Rename select entity
@@ -81,9 +77,7 @@ class HDMISwitcherSelect(SelectEntity):
             f"{DOMAIN}_{data_handler.host}_{data_handler.port}_output_"
             f"{output_num}_select"
         )
-        self._attr_name = (
-            self._default_name
-        )  # Static name for entity ID generation
+        self._attr_name = self._default_name  # Static name for entity ID generation
         self._attr_suggested_object_id = f"output{output_num}"
         self._attr_options = list(self.data_handler.input_names.values())
 
@@ -152,17 +146,13 @@ class HDMISwitcherSelect(SelectEntity):
                 str(self.output_num), self._default_name
             )
             if entry.name != friendly_name:
-                registry.async_update_entity(
-                    self.entity_id, name=friendly_name
-                )
+                registry.async_update_entity(self.entity_id, name=friendly_name)
 
     def _get_input_name(self, input_num):
         """Get the input name for a given input number."""
         if input_num is None:
             return None
-        return self.data_handler.input_names.get(
-            str(input_num), f"Input {input_num}"
-        )
+        return self.data_handler.input_names.get(str(input_num), f"Input {input_num}")
 
     @property
     def device_info(self):
@@ -189,8 +179,7 @@ class HDMISwitcherOutputAllSelect(SelectEntity):
         self._state = None
         self._attr_name = "Output All"
         self._attr_unique_id = (
-            f"{DOMAIN}_{data_handler.host}_{data_handler.port}"
-            f"_output_all_select"
+            f"{DOMAIN}_{data_handler.host}_{data_handler.port}" f"_output_all_select"
         )
         self._attr_suggested_object_id = "output_all"
         self._attr_options = list(self.data_handler.input_names.values())
@@ -218,9 +207,7 @@ class HDMISwitcherOutputAllSelect(SelectEntity):
         )
 
         if input_num is None:
-            _LOGGER.error(
-                "Invalid input name selected for Output All: %s", option
-            )
+            _LOGGER.error("Invalid input name selected for Output All: %s", option)
             return
 
         # Send command to change all outputs
@@ -234,9 +221,9 @@ class HDMISwitcherOutputAllSelect(SelectEntity):
             self.async_write_ha_state()
 
             # Update individual output select entities
-            output_select_entities = self.hass.data[DOMAIN][
-                self.entry_id
-            ].get("output_select_entities", [])
+            output_select_entities = self.hass.data[DOMAIN][self.entry_id].get(
+                "output_select_entities", []
+            )
             for entity in output_select_entities:
                 await entity.async_update()
                 entity.async_write_ha_state()
@@ -271,81 +258,3 @@ class HDMISwitcherOutputAllSelect(SelectEntity):
             manufacturer=MANUFACTURER,
             model=MODEL,
         )
-
-
-# pylint: disable=too-many-instance-attributes
-# class HDMISwitcherRenameSelect(SelectEntity):
-#     """Select entity for choosing input/output to rename."""
-
-#     def __init__(self, hass: HomeAssistant, entry, data_handler) -> None:
-#         """Initialize the rename select entity."""
-#         self.hass = hass
-#         self.entry = entry
-#         self.data_handler = data_handler
-#         self._attr_name = "Select Item to Rename"
-#         self._attr_unique_id = (
-#             f"{DOMAIN}_{data_handler.host}_{data_handler.port}_rename_select"
-#         )
-#         self._attr_suggested_object_id = "hdmi_switcher_rename_select"
-#         self._attr_options = [f"Input {i}" for i in range(1, 5)] + [
-#             f"Output {i}" for i in range(1, 5)
-#         ]
-#         self._attr_current_option = self._attr_options[0]
-#         self._attr_entity_category = EntityCategory.CONFIG
-
-#     async def async_select_option(self, option: str) -> None:
-#         """Handle option selection."""
-#         self._attr_current_option = option
-#         self.async_write_ha_state()
-
-#         # Update the new_name_text_entity with
-#         # the current name of the selected item
-#         new_name_text_entity = self.hass.data[DOMAIN][self.entry.entry_id][
-#             "new_name_text_entity"
-#         ]
-
-#         # Determine if item is an input or output
-#         if option.startswith("Input"):
-#             num = int(option.split(" ")[1])
-#             current_name = self.data_handler.input_names.get(
-#                 str(num), f"Input {num}"
-#             )
-#         elif option.startswith("Output"):
-#             num = int(option.split(" ")[1])
-#             current_name = self.data_handler.output_names.get(
-#                 str(num), f"Output {num}"
-#             )
-#         else:
-#             _LOGGER.error("Invalid item selected: %s", option)
-#             current_name = ""
-
-#         # Truncate the current name to 7 characters if necessary
-#         current_name = current_name[:7]
-
-#         # Update the new_name_text_entity
-#         new_name_text_entity.native_value = (
-#             current_name  # Use public property instead of protected member
-#         )
-#         new_name_text_entity.async_write_ha_state()
-
-#     def select_option(self, option: str) -> None:
-#         """Select an option synchronously."""
-#         run_callback_threadsafe(
-#             self.hass.loop, self.async_select_option, option
-#         ).result()
-
-#     async def async_update(self):
-#         """Update the select entity."""
-#         # No dynamic updates needed; method intentionally left empty
-
-#     @property
-#     def device_info(self):
-#         """Return device information about this HDMI Switcher."""
-#         return DeviceInfo(
-#             identifiers={
-#                 (DOMAIN, f"{self.data_handler.host}:{self.data_handler.port}")
-#             },
-#             name=f"HDMI Switcher ({self.data_handler.host})",
-#             manufacturer=MANUFACTURER,
-#             model=MODEL,
-#         )

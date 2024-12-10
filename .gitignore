@@ -5,6 +5,7 @@ testing/
 pyproject.toml
 .DS_Store
 *vscode*
+.omit*
 
 
 # Byte-compiled / optimized / DLL files
