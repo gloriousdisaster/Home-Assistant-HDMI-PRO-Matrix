@@ -115,7 +115,7 @@ The PRO-Matrix44-SC uses an embedded web server with HTTP 0.9. I reverse-enginee
 
 ### Retrieve General Parameters
 
-The following `curl` command retrieves all available parameters from the device:
+The following `curl` command retrieves general available parameters from the device:
 
 ```bash
 curl --http0.9 -X POST "http://IP-ADDRESS/inform.cgi?undefined" \
@@ -125,7 +125,7 @@ curl --http0.9 -X POST "http://IP-ADDRESS/inform.cgi?undefined" \
 
 ### Mute All Outputs (Set to Input 0)
 
-The following `curl` command sets all outputs to input 0, effectively muting the device:
+The following `curl` command sets all outputs to input 0, effectively muting all outputs on the device:
 
 ```bash
 curl --http0.9 -X POST "http://IP-ADDRESS/inform.cgi?undefined" \
@@ -135,7 +135,7 @@ curl --http0.9 -X POST "http://IP-ADDRESS/inform.cgi?undefined" \
 
 Replace IP-ADDRESS with your device’s actual IP.
 
-### More POST Information
+### More POST Payload Information
 
 A "param1" response will look something like this.
 
@@ -147,7 +147,7 @@ A "param1" response will look something like this.
 
 - Outputs [o] [1-5]
 - Inputs [i] [0-4]
-- Output 0 = Mute
+- Input 0 = Mute
 - Maps [m] [1-8] (Maps are presets for multiple I/O settings)
 
 | Payload           | Response           | Description                                |
@@ -158,7 +158,7 @@ A "param1" response will look something like this.
 |                   | "nameout[o]":"[n]" | Output Name                                |
 |                   | "powstatus":"[v]"  | Power Status (Values 1=on 0=off)           |
 | out[o]: [i]       |                    | Assigns [o] Output to [i] input            |
-| "outa":"[i]"      |                    | Assigns All Output to [i]                  |
+| "outa":"[i]"      |                    | Assigns All Outputs to [i]                 |
 | "namein[i]":"[n]" |                    | Assign Input Friendly Name                 |
 | "nameout[o]":[n]" |                    | Assign Output                              |
 | mname[m]?[n]      |                    | Assigns Map Friendly Name                  |
