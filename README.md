@@ -6,7 +6,7 @@ This is a custom integration for Home Assistant that allows you to control your 
 
 ## Disclaimer
 
-I am not a programmer— just a Glorious Disaster! (Or maybe a glorious work in progress!) This is my first attempt at creating a Home Assistant (HA) integration. reverse-engineered the Web API calls for the device, but I relied heavily on ChatGPT-4 o1 (Preview) and Claude 3.5 (Sonnet Preview) for assistance in generating and debugging the python code.
+I am not a programmer— just a Glorious Disaster! (Or maybe a glorious work in progress!) This is my first attempt at creating a Home Assistant (HA) integration. I reverse-engineered the Web API calls for the device, but I relied heavily on ChatGPT-4 o1 (Preview) and Claude 3.5 (Sonnet Preview) for assistance in generating and debugging the python code.
 
 ---
 
@@ -40,6 +40,9 @@ This integration allows you to control your **PRO-Matrix44-SC HDMI Matrix** dire
 
 ## Requirements
 
+> [!Tip]  
+> The gofanco PRO-Matrix44-SC defaults to a static IP of 192.168.1.70, as noted in the manual. Changing this requires a Windows PC, an RS232 connection, and the manufacturer’s Control Program. To simplify management (once and done), configure the device to use DHCP and set a reservation in your router or DHCP server to maintain a consistent IP.
+
 - **Matrix Device**: PRO-Matrix44-SC with IP control enabled and accessible to Home Assistant.
 - **DHCP Reservation**: Highly recommended, as the integration does not track IP address changes.
 
@@ -47,10 +50,11 @@ This integration allows you to control your **PRO-Matrix44-SC HDMI Matrix** dire
 
 ## Installation
 
-### Installation via HACS (Recommended) - Not in store yet.
-
-H<sub>2</sub>O
 **This is a placeholder**
+Itegration is not in the store yet.
+
+```text
+### Installation via HACS (Recommended) -
 
 1. Install [HACS](https://hacs.xyz/) if you haven’t already.
 2. Search for `Gofanco Prophecy HDMI Matrix` in HACS under Integrations and install it.
@@ -61,6 +65,9 @@ H<sub>2</sub>O
    - Enter your device’s IP address.
 
 Not familiar with HACS? Check out their [documentation](https://hacs.xyz/) for guidance.
+```
+
+---
 
 ### Manual Installation
 
@@ -70,7 +77,10 @@ Not familiar with HACS? Check out their [documentation](https://hacs.xyz/) for g
 4. Download the files from this repository’s `custom_components/gofanco_prophecy/` directory.
 5. Place the downloaded files into your `gofanco_prophecy` folder.
 6. Restart Home Assistant.
-7. Add the integration in the Home Assistant UI as described above.
+7. Add the integration in the Home Assistant UI.
+   - Go to **Settings** > **Integrations** > **Add Integration**.
+   - Search for `HDMI Matrix`.
+   - Enter your device’s IP address.
 
 ---
 
