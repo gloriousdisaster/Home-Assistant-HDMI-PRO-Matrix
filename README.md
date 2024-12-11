@@ -51,9 +51,11 @@ This integration allows you to control your **PRO-Matrix44-SC HDMI Matrix** dire
 ## Installation
 
 **This is a placeholder**
+
 Itegration is not in the store yet.
 
 ```text
+**Not in store yet**
 ### Installation via HACS (Recommended) -
 
 1. Install [HACS](https://hacs.xyz/) if you haven’t already.
@@ -170,9 +172,9 @@ A "param1" response will look something like this.
 | out[o]: [i]       |                    | Assigns [o] Output to [i] input            |
 | "outa":"[i]"      |                    | Assigns All Outputs to [i]                 |
 | "namein[i]":"[n]" |                    | Assign Input Friendly Name                 |
-| "nameout[o]":[n]" |                    | Assign Output                              |
+| "nameout[o]":[n]" |                    | Assign Output Friendly Name                |
 | mname[m]?[n]      |                    | Assigns Map Friendly Name                  |
-| poweroon          |                    | Power On Action                            |
+| poweron           |                    | Power On Action                            |
 | poweroff          |                    | Power Off Action                           |
 | LOADNAME:         |                    | Get I/O Names                              |
 | LOADMAP:          |                    | Get Map Names                              |
@@ -184,8 +186,8 @@ A "param1" response will look something like this.
 - Known Issues
 
   - This integration may have bugs (I’m still discovering them).
-  - When adding the device, there is no current checks in place if you were to enter an incorrect IP address. The device will be created, but the entities will not function.
-  - "Note: The HDMI Matrix is referred to as an HDMI Switch(er) in some parts of the code; while technically referred to as a matrix, it functions as a switching device."
+  - When adding the device, there is no current checks in place if you were to enter an incorrect IP address or the device was unreachable. The device in HA will be created, but the entities will not function.
+  - "Note: The HDMI Matrix is referred to as an HDMI Switch(er) in some parts of the code; while technically referred to as a matrix, it functions as a switching device and I used the terms interchangeably."
   - Feel free to [report issues](https://github.com/gloriousdisaster/Home-Assistant-HDMI-PRO-Matrix/issues).
 
 ---
