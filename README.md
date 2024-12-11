@@ -6,8 +6,7 @@ This is a custom integration for Home Assistant that allows you to control your 
 
 ## Disclaimer
 
-I am not a programmer—just a Glorious Disaster!  
-This is my first attempt at creating a Home Assistant (HA) integration. I relied heavily on ChatGPT-4 o1 (Preview) and Claude 3.5 (Sonnet Preview) for assistance in generating and debugging the code.
+I am not a programmer— just a Glorious Disaster! (Or maybe a glorious work in progress!) This is my first attempt at creating a Home Assistant (HA) integration. I reverse-engineered the Web API calls for the device, but I relied heavily on ChatGPT-4 o1 (Preview) and Claude 3.5 (Sonnet Preview) for assistance in generating and debugging the python code.
 
 ---
 
@@ -15,7 +14,7 @@ This is my first attempt at creating a Home Assistant (HA) integration. I relied
 ![HACS](https://img.shields.io/badge/HACS-Integration-green)
 ![GitHub Release](https://img.shields.io/github/v/release/gloriousdisaster/Home-Assistant-HDMI-PRO-Matrix)
 ![GitHub License](https://img.shields.io/github/license/gloriousdisaster/Home-Assistant-HDMI-PRO-Matrix)
-![Maintenance](https://img.shields.io/maintenance/Minimally/2024)
+![Maintenance](https://img.shields.io/maintenance/Limited/2024)
 
 ---
 
@@ -41,6 +40,9 @@ This integration allows you to control your **PRO-Matrix44-SC HDMI Matrix** dire
 
 ## Requirements
 
+> [!Tip]  
+> The gofanco PRO-Matrix44-SC defaults to a static IP of 192.168.1.70, as noted in the manual. Changing this requires a Windows PC, an RS232 connection, and the manufacturer’s Control Program. To simplify management (once and done), configure the device to use DHCP and set a reservation in your router or DHCP server to maintain a consistent IP.
+
 - **Matrix Device**: PRO-Matrix44-SC with IP control enabled and accessible to Home Assistant.
 - **DHCP Reservation**: Highly recommended, as the integration does not track IP address changes.
 
@@ -48,29 +50,37 @@ This integration allows you to control your **PRO-Matrix44-SC HDMI Matrix** dire
 
 ## Installation
 
-### Installation via HACS (Recommended) - Not in store yet.
-
 **This is a placeholder**
+Itegration is not in the store yet.
+
+```text
+### Installation via HACS (Recommended) -
 
 1. Install [HACS](https://hacs.xyz/) if you haven’t already.
 2. Search for `Gofanco Prophecy HDMI Matrix` in HACS under Integrations and install it.
 3. Restart Home Assistant (yes, this step is important).
 4. Add the integration in Home Assistant:
    - Go to **Settings** > **Integrations** > **Add Integration**.
-   - Search for `HDMI Switcher`.
+   - Search for `HDMI Matrix`.
    - Enter your device’s IP address.
 
 Not familiar with HACS? Check out their [documentation](https://hacs.xyz/) for guidance.
+```
+
+---
 
 ### Manual Installation
 
 1. Navigate to your Home Assistant configuration directory (where `configuration.yaml` resides).
 2. Create a `custom_components` folder if it doesn’t exist.
-3. Inside `custom_components`, create a folder named `hdmi_switcher`.
-4. Download the files from this repository’s `custom_components/hdmi_switcher/` directory.
-5. Place the downloaded files into your `hdmi_switcher` folder.
+3. Inside `custom_components`, create a folder named `gofanco_prophecy`.
+4. Download the files from this repository’s `custom_components/gofanco_prophecy/` directory.
+5. Place the downloaded files into your `gofanco_prophecy` folder.
 6. Restart Home Assistant.
-7. Add the integration in the Home Assistant UI as described above.
+7. Add the integration in the Home Assistant UI.
+   - Go to **Settings** > **Integrations** > **Add Integration**.
+   - Search for `HDMI Matrix`.
+   - Enter your device’s IP address.
 
 ---
 
@@ -175,14 +185,14 @@ A "param1" response will look something like this.
 
   - This integration may have bugs (I’m still discovering them).
   - When adding the device, there is no current checks in place if you were to enter an incorrect IP address. The device will be created, but the entities will not function.
-  - "Note: The HDMI Matrix is referred to as an HDMI Switch in some parts of the code; while technically a matrix, it functions as a switching device."
+  - "Note: The HDMI Matrix is referred to as an HDMI Switch(er) in some parts of the code; while technically referred to as a matrix, it functions as a switching device."
   - Feel free to [report issues](https://github.com/gloriousdisaster/Home-Assistant-HDMI-PRO-Matrix/issues).
 
 ---
 
 ## Contributing
 
-I welcome contributions! If you encounter bugs or have feature suggestions, let me know.
+Contributions are always welcome! If you come across any bugs or have feature suggestions, feel free to share them. While my Python skills are somewhat limited, I'm eager to collaborate and see what we can achieve together!
 
 Submit Issues: Report bugs or suggest features in the GitHub issues section.
 Fork and Contribute: If you want to make changes, fork the repository and submit a pull request.
@@ -192,3 +202,4 @@ Fork and Contribute: If you want to make changes, fork the repository and submit
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+No warranty of any kind, but you can do whatever you want with it.
