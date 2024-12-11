@@ -69,7 +69,7 @@ Itegration is not in the store yet.
 Not familiar with HACS? Check out their [documentation](https://hacs.xyz/) for guidance.
 ```
 
----
+## [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=gloriousdisaster&repository=Home-Assistant-HDMI-PRO-Matrix&category=Integration)
 
 ### Manual Installation
 
