@@ -157,7 +157,7 @@ A "param1" response will look something like this.
 
 #### Payloads
 
-- Outputs [o] [1-5]
+- Outputs [o] [1-4]
 - Inputs [i] [0-4]
 - Input 0 = Mute
 - Maps [m] [1-8] (Maps are presets for multiple I/O settings)
@@ -187,7 +187,7 @@ A "param1" response will look something like this.
 
   - This integration may have bugs (I’m still discovering them).
   - When adding the device, there is no current checks in place if you were to enter an incorrect IP address or the device was unreachable. The device in HA will be created, but the entities will not function.
-  - "Note: The HDMI Matrix is referred to as an HDMI Switch(er) in some parts of the code; while technically referred to as a matrix, it functions as a switching device and I used the terms interchangeably."
+  - _Note_: The HDMI Matrix is referred to as an HDMI Switch(er) in some parts of the code; while technically referred to as a matrix, it functions as a switching device and I used the terms interchangeably.
   - Feel free to [report issues](https://github.com/gloriousdisaster/Home-Assistant-HDMI-PRO-Matrix/issues).
 
 ---
