@@ -6,7 +6,7 @@ This is a custom integration for Home Assistant that allows you to control your 
 
 ## Disclaimer
 
-I am not a programmer— just a Glorious Disaster! (Or maybe a glorious work in progress!) This is my first attempt at creating a Home Assistant (HA) integration. I reverse-engineered the Web API calls for the device, but I relied heavily on ChatGPT-4 o1 (Preview) and Claude 3.5 (Sonnet Preview) for assistance in generating and debugging the python code.
+This is my first attempt at creating a Home Assistant (HA) integration. I reverse-engineered the Web API calls for the device, but I relied heavily on ChatGPT-4 o1 (Preview) and Claude 3.5 (Sonnet Preview) for assistance in generating and debugging the python code.
 
 ---
 
