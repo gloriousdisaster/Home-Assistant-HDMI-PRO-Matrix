@@ -121,7 +121,7 @@ Stock entities work but don't feel right for a matrix switcher. Three ready-to-p
 
 ### The matrix-grid view (recommended)
 
-The grid view represents the matrix nature of the device most faithfully:
+The grid mirrors the device itself — one row per output, one column per input:
 
 ![Matrix-grid dashboard in Home Assistant](matrix_grid.png)
 
