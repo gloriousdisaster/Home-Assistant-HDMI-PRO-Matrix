@@ -123,18 +123,9 @@ Stock entities work but don't feel right for a matrix switcher. Three ready-to-p
 
 The grid view represents the matrix nature of the device most faithfully:
 
-```
-┌──────────┬──────┬──────┬──────┬──────┬──────┐
-│          │ IN 1 │ IN 2 │ IN 3 │ IN 4 │ Mute │
-├──────────┼──────┼──────┼──────┼──────┼──────┤
-│ Output 1 │  ●   │      │      │      │      │
-│ Output 2 │      │      │  ●   │      │      │
-│ Output 3 │      │  ●   │      │      │      │
-│ Output 4 │      │      │      │  ●   │      │
-└──────────┴──────┴──────┴──────┴──────┴──────┘
-```
+![Matrix-grid dashboard in Home Assistant](matrix_grid.png)
 
-Each row is an output; each column an input. The blue cell is the currently-routed input; tap any other cell in the same row to route that input instead. The right-most column routes the output to mute (input 0) and highlights red when active. Input/output labels come from the `text.hdmi_matrix_*_label` entities, so renaming a source updates the header cell instantly.
+Each row is an output; each column an input. The highlighted cell is the currently-routed input; tap any other cell in the same row to route that input instead. The right-most column routes the output to mute (input 0) and highlights red when active. Input/output labels come from the `text.hdmi_matrix_*_label` entities, so renaming a source updates the header cell instantly.
 
 ## Blueprints
 
