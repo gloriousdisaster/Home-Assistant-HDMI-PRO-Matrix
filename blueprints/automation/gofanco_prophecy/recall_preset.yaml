@@ -1,0 +1,43 @@
+blueprint:
+  name: Gofanco Prophecy – Recall preset
+  description: >
+    Recall one of the 8 preset scenes on a Gofanco Prophecy HDMI Matrix
+    when a trigger fires. For example: recall "Movie night" when your
+    "Movie" scene activates, or recall "Sleep" at a fixed time.
+  domain: automation
+  source_url: https://github.com/gloriousdisaster/Home-Assistant-HDMI-PRO-Matrix/blob/main/blueprints/automation/gofanco_prophecy/recall_preset.yaml
+  input:
+    trigger_event:
+      name: Trigger
+      description: What event should recall the preset?
+      selector:
+        trigger:
+    recall_entity:
+      name: Preset-recall entity
+      description: >
+        The preset-recall select entity for your matrix. Defaults to
+        `select.hdmi_matrix_recall_preset`.
+      default: select.hdmi_matrix_recall_preset
+      selector:
+        entity:
+          filter:
+            - integration: gofanco_prophecy
+              domain: select
+    preset_option:
+      name: Preset option
+      description: >
+        The preset to recall, exactly as shown in the select entity's
+        options list (e.g. `"1: Movie"`, `"3: Sports"`).
+      selector:
+        text:
+
+mode: single
+
+trigger: !input trigger_event
+
+action:
+  - service: select.select_option
+    target:
+      entity_id: !input recall_entity
+    data:
+      option: !input preset_option

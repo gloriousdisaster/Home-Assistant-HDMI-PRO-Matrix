@@ -1,0 +1,49 @@
+name: Bug report
+description: Report a problem with the Gofanco Prophecy HDMI Matrix integration.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out a bug report. Please provide as much detail as possible.
+  - type: input
+    id: ha-version
+    attributes:
+      label: Home Assistant version
+      placeholder: 2024.10.1
+    validations:
+      required: true
+  - type: input
+    id: integration-version
+    attributes:
+      label: Integration version
+      placeholder: 2.0.0
+    validations:
+      required: true
+  - type: input
+    id: device-firmware
+    attributes:
+      label: Device firmware / model revision
+      description: If known, from the matrix's web UI or label on the unit.
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened
+      description: Describe the problem. Include the expected vs. actual behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant Home Assistant logs
+      description: "Enable debug logging via `logger.gofanco_prophecy: debug` and paste the output here."
+      render: shell
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Diagnostics
+      description: Attach diagnostics downloaded from the integration's overflow menu.

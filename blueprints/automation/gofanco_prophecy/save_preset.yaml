@@ -1,0 +1,36 @@
+blueprint:
+  name: Gofanco Prophecy – Save current routing as preset
+  description: >
+    When a trigger fires, save the matrix's current input-to-output routing
+    into one of the 8 preset slots. Useful for "save my current setup as
+    Movie night when I press the button" workflows.
+
+    Only works when exactly one Gofanco Prophecy matrix is configured in
+    Home Assistant. If you have more than one, build this with a regular
+    automation so you can pass the correct `entry_id`.
+  domain: automation
+  source_url: https://github.com/gloriousdisaster/Home-Assistant-HDMI-PRO-Matrix/blob/main/blueprints/automation/gofanco_prophecy/save_preset.yaml
+  input:
+    trigger_event:
+      name: Trigger
+      description: What event should save the preset?
+      selector:
+        trigger:
+    preset_index:
+      name: Preset slot
+      description: Which preset slot (1-8) to overwrite.
+      default: 1
+      selector:
+        number:
+          min: 1
+          max: 8
+          mode: box
+
+mode: single
+
+trigger: !input trigger_event
+
+action:
+  - service: gofanco_prophecy.save_preset
+    data:
+      index: !input preset_index

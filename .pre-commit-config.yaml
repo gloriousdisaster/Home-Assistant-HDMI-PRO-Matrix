@@ -1,0 +1,23 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    # Keep this roughly in sync with requirements_test.txt's ruff pin.
+    rev: v0.15.11
+    hooks:
+      - id: ruff
+      - id: ruff-format
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.3.0
+    hooks:
+      - id: codespell
+        args: [--ignore-words-list=hass,ot]
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-json
+      - id: check-yaml
+        # Blueprints use `!input`; HA configs can carry `!include` / `!secret`.
+        # SafeLoader rejects unknown tags, so --unsafe keeps the syntax check
+        # but tolerates custom tags.
+        args: [--unsafe]
+      - id: end-of-file-fixer
+      - id: trailing-whitespace

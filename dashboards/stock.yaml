@@ -1,0 +1,99 @@
+# HDMI Matrix — Stock dashboard (no HACS frontend extensions required)
+#
+# Paste this into a new Lovelace view ( ⋮ → Edit dashboard → ⋮ → Raw config editor )
+# or use it as a card stack inside an existing view.
+#
+# Requires: nothing beyond stock Home Assistant.
+
+type: vertical-stack
+cards:
+  - type: heading
+    heading: HDMI Matrix
+    icon: mdi:video-switch
+    heading_style: title
+
+  # Power + system-wide controls at the top.
+  - type: horizontal-stack
+    cards:
+      - type: tile
+        entity: switch.hdmi_matrix_power
+        name: Power
+        vertical: true
+        tap_action:
+          action: toggle
+      - type: tile
+        entity: button.hdmi_matrix_mute_all_outputs
+        name: Mute all
+        vertical: true
+      - type: tile
+        entity: select.hdmi_matrix_all_outputs
+        name: All → input
+        vertical: true
+
+  # Per-output tiles with built-in source picker.
+  - type: grid
+    columns: 2
+    square: false
+    cards:
+      - type: tile
+        entity: media_player.hdmi_matrix_output_1
+        features:
+          - type: media-player-volume-buttons
+      - type: tile
+        entity: media_player.hdmi_matrix_output_2
+      - type: tile
+        entity: media_player.hdmi_matrix_output_3
+      - type: tile
+        entity: media_player.hdmi_matrix_output_4
+
+  # Presets — recall via dropdown; save via button that fires the service.
+  - type: entities
+    title: Presets
+    icon: mdi:folder-play
+    state_color: true
+    entities:
+      - entity: select.hdmi_matrix_recall_preset
+        name: Recall preset
+      - type: call-service
+        name: Save current routing as preset 1
+        icon: mdi:content-save-cog
+        service: gofanco_prophecy.save_preset
+        service_data:
+          index: 1
+      - type: call-service
+        name: Save current routing as preset 2
+        icon: mdi:content-save-cog
+        service: gofanco_prophecy.save_preset
+        service_data:
+          index: 2
+      - type: call-service
+        name: Save current routing as preset 3
+        icon: mdi:content-save-cog
+        service: gofanco_prophecy.save_preset
+        service_data:
+          index: 3
+
+  # Labels — collapsible so they don't dominate the view.
+  - type: conditional
+    conditions: []
+    card:
+      type: entities
+      title: Device labels (editable, ≤7 chars)
+      icon: mdi:rename
+      entities:
+        - text.hdmi_matrix_input_1_label
+        - text.hdmi_matrix_input_2_label
+        - text.hdmi_matrix_input_3_label
+        - text.hdmi_matrix_input_4_label
+        - text.hdmi_matrix_output_1_label
+        - text.hdmi_matrix_output_2_label
+        - text.hdmi_matrix_output_3_label
+        - text.hdmi_matrix_output_4_label
+        - text.hdmi_matrix_preset_1_name
+        - text.hdmi_matrix_preset_2_name
+        - text.hdmi_matrix_preset_3_name
+        - text.hdmi_matrix_preset_4_name
+        - text.hdmi_matrix_preset_5_name
+        - text.hdmi_matrix_preset_6_name
+        - text.hdmi_matrix_preset_7_name
+        - text.hdmi_matrix_preset_8_name

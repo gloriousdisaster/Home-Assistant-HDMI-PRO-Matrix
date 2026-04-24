@@ -1,0 +1,75 @@
+[build-system]
+requires = ["setuptools>=65"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gofanco-prophecy"
+version = "2.1.0"
+description = "Home Assistant custom integration for the Gofanco Prophecy 4x4 HDMI Matrix."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.12"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+log_cli = true
+log_cli_level = "WARNING"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+
+[tool.ruff.lint]
+select = [
+  "B",      # bugbear
+  "C4",     # comprehensions
+  "D",      # pydocstyle
+  "E",      # pycodestyle errors
+  "F",      # pyflakes
+  "I",      # isort
+  "N",      # pep8-naming
+  "PT",     # pytest-style
+  "PYI",    # pyi
+  "RET",    # return
+  "RUF",    # ruff
+  "SIM",    # simplify
+  "SLF",    # self
+  "TID",    # tidy imports
+  "UP",     # pyupgrade
+  "W",      # pycodestyle warnings
+]
+ignore = [
+  "D203",   # incompatible with D211
+  "D213",   # incompatible with D212
+  "D400",
+  "D415",
+  "SLF001", # private member access; allowed within this package
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["D", "SLF", "PT011"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
+
+[tool.ruff.lint.isort]
+force-sort-within-sections = true
+known-first-party = ["custom_components.gofanco_prophecy", "tests"]
+combine-as-imports = true
+split-on-trailing-comma = false
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+ignore_missing_imports = true
+warn_unused_ignores = true
+no_implicit_optional = true
+implicit_reexport = true
+exclude = ["tests/"]
+
+[[tool.mypy.overrides]]
+module = "custom_components.gofanco_prophecy.*"
+disallow_untyped_defs = true
+disallow_any_generics = true
+warn_return_any = true

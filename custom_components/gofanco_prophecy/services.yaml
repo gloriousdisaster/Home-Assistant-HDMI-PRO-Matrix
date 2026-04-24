@@ -1,0 +1,26 @@
+save_preset:
+  name: Save preset
+  description: >
+    Saves the matrix's current routing (inputs assigned to each output)
+    into one of the 8 preset slots. Recall the preset later via the
+    preset-recall select entity.
+  fields:
+    entry_id:
+      name: Configuration entry
+      description: >
+        The config entry ID of the HDMI Matrix to target. Only required
+        when multiple matrices are configured.
+      required: false
+      selector:
+        config_entry:
+          integration: gofanco_prophecy
+    index:
+      name: Preset slot
+      description: Which preset slot (1-8) to overwrite.
+      required: true
+      example: 1
+      selector:
+        number:
+          min: 1
+          max: 8
+          mode: box

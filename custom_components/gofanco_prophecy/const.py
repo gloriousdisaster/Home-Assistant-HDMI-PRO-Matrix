@@ -1,13 +1,31 @@
-# const.py
+"""Constants for the Gofanco Prophecy HDMI Matrix integration."""
 
-"""
-This module contains constants (static configurations)
-for the HDMI Switcher integration.
-"""
+from __future__ import annotations
 
-DEFAULT_PORT = 80
-DOMAIN = "gofanco_prophecy"
-MANUFACTURER = "Gofanco Prophecy"
-MODEL = "PRO-Matrix44-SC"
-PLATFORMS = ["button", "select", "switch"]
-# PLATFORMS = ["button", "select", "switch", "text"]
+from datetime import timedelta
+from typing import Final
+
+DOMAIN: Final = "gofanco_prophecy"
+
+MANUFACTURER: Final = "Gofanco Prophecy"
+MODEL: Final = "PRO-Matrix44-SC"
+
+DEFAULT_HOST_SUGGESTION: Final = "192.168.1.92"
+DEFAULT_PORT: Final = 80
+DEFAULT_TIMEOUT: Final = 10.0
+SCAN_INTERVAL: Final = timedelta(seconds=15)
+REFRESH_DEBOUNCE_COOLDOWN: Final = 0.5
+
+NUM_INPUTS: Final = 4
+NUM_OUTPUTS: Final = 4
+NUM_PRESETS: Final = 8
+NAME_MAX_LEN: Final = 7
+MUTE_INPUT: Final = 0
+
+PLATFORMS: Final = [
+    "button",
+    "media_player",
+    "select",
+    "switch",
+    "text",
+]

@@ -1,0 +1,100 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect your HDMI Matrix",
+        "description": "Enter the network address of your Gofanco Prophecy 4x4 HDMI Matrix. The matrix must be reachable on the same network as Home Assistant.",
+        "data": {
+          "host": "Host or IP address",
+          "port": "Port"
+        },
+        "data_description": {
+          "host": "The hostname or static IP of the matrix. The factory default is 192.168.1.92; a DHCP reservation is strongly recommended.",
+          "port": "Defaults to 80. Only change this if the device is behind a port mapping."
+        }
+      },
+      "reconfigure": {
+        "title": "Update HDMI Matrix connection",
+        "description": "Update the network address used to reach your Gofanco Prophecy HDMI Matrix.",
+        "data": {
+          "host": "Host or IP address",
+          "port": "Port"
+        },
+        "data_description": {
+          "host": "The hostname or static IP of the matrix.",
+          "port": "Defaults to 80."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Could not reach the matrix at that address. Check the IP, that Home Assistant and the matrix are on the same network, and that no firewall is blocking port 80.",
+      "invalid_response": "The device responded but the reply could not be parsed. Confirm the address points to a Gofanco Prophecy matrix and that its firmware is the web-control variant.",
+      "unknown": "Unexpected error. Check the Home Assistant log for details."
+    },
+    "abort": {
+      "already_configured": "This HDMI Matrix is already configured.",
+      "reconfigure_successful": "Connection details updated.",
+      "wrong_device": "The new address points to a different device than the one configured."
+    }
+  },
+  "entity": {
+    "button": {
+      "mute_all": {
+        "name": "Mute all outputs"
+      }
+    },
+    "media_player": {
+      "output_player": {
+        "name": "Output {number}"
+      }
+    },
+    "select": {
+      "output": {
+        "name": "Output {number}"
+      },
+      "output_all": {
+        "name": "All outputs"
+      },
+      "preset_recall": {
+        "name": "Recall preset"
+      }
+    },
+    "switch": {
+      "power": {
+        "name": "Power"
+      }
+    },
+    "text": {
+      "input_name": {
+        "name": "Input {number} label"
+      },
+      "output_name": {
+        "name": "Output {number} label"
+      },
+      "preset_name": {
+        "name": "Preset {number} name"
+      }
+    }
+  },
+  "exceptions": {
+    "command_failed": {
+      "message": "Command failed: {detail}"
+    }
+  },
+  "services": {
+    "save_preset": {
+      "name": "Save preset",
+      "description": "Save the matrix's current routing into one of the 8 preset slots.",
+      "fields": {
+        "entry_id": {
+          "name": "Configuration entry",
+          "description": "Which HDMI Matrix to target (only required when multiple matrices are configured)."
+        },
+        "index": {
+          "name": "Preset slot",
+          "description": "Which preset slot (1-8) to overwrite."
+        }
+      }
+    }
+  }
+}

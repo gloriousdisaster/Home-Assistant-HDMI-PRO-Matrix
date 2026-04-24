@@ -4,11 +4,15 @@ on:
   push:
   pull_request:
   schedule:
-    - cron:  '0 0 * * *'
+    - cron: "0 0 * * *"
 
 jobs:
   validate:
     runs-on: "ubuntu-latest"
     steps:
-        - uses: "actions/checkout@v4"
-        - uses: "home-assistant/actions/hassfest@master"
+      - uses: "actions/checkout@v4"
+      # home-assistant/actions's only release tag (1.0.0, 2020) is stale and
+      # ships a broken image ("No module named 'script'" at runtime). The
+      # project uses @master, which is the maintained rolling pointer used
+      # by HA core's own templates. Revisit if a versioned release is cut.
+      - uses: "home-assistant/actions/hassfest@master"

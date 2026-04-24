@@ -1,0 +1,69 @@
+blueprint:
+  name: Gofanco Prophecy – Auto-route media source
+  description: >
+    When a media_player (Apple TV, Roku, PlayStation, etc.) starts playing,
+    automatically route its matching HDMI input to a chosen matrix output.
+    Great for "when Apple TV wakes up, put it on the Living Room TV".
+  domain: automation
+  source_url: https://github.com/gloriousdisaster/Home-Assistant-HDMI-PRO-Matrix/blob/main/blueprints/automation/gofanco_prophecy/auto_route_media.yaml
+  input:
+    source_player:
+      name: Source media player
+      description: >
+        The media_player whose state triggers the route (the device plugged
+        into the matrix). For example `media_player.apple_tv`.
+      selector:
+        entity:
+          domain: media_player
+    trigger_states:
+      name: Trigger states
+      description: >
+        Which source-player state(s) should fire the automation?
+        Default is "playing" — add "idle" or "on" if your device reports
+        those while in use.
+      default:
+        - playing
+      selector:
+        select:
+          multiple: true
+          options:
+            - playing
+            - paused
+            - idle
+            - buffering
+            - "on"
+            - standby
+    matrix_output:
+      name: Matrix output
+      description: >
+        The HDMI Matrix output that should display this source (pick one
+        of the `media_player.hdmi_matrix_output_*` entities).
+      selector:
+        entity:
+          filter:
+            - integration: gofanco_prophecy
+              domain: media_player
+    input_label:
+      name: Matrix input label
+      description: >
+        The label of the matrix input to route (≤7 chars, exactly as shown
+        in Home Assistant — e.g. `AppleTV`, `Roku`, `PS5`). Edit the
+        matching `text.hdmi_matrix_input_*_label` entity if you need to
+        change it.
+      selector:
+        text:
+
+mode: single
+max_exceeded: silent
+
+trigger:
+  - platform: state
+    entity_id: !input source_player
+    to: !input trigger_states
+
+action:
+  - service: media_player.select_source
+    target:
+      entity_id: !input matrix_output
+    data:
+      source: !input input_label

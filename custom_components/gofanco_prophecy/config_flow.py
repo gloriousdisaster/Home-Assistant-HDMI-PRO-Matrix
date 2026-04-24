@@ -1,105 +1,118 @@
-# config_flow.py
-"""
-HDMI Switcher Configuration Flow.
+"""Config flow for the Gofanco Prophecy HDMI Matrix integration."""
 
-This module handles the configuration flow for the HDMI Switcher integration,
-allowing users to set up the integration via the Home Assistant UI.
-"""
-
-# pylint: disable=duplicate-code
+from __future__ import annotations
 
 import logging
-import socket
-import json
-import voluptuous as vol
-from homeassistant import config_entries
-from homeassistant.core import callback
-from homeassistant.config_entries import ConfigEntry
+from typing import Any
 
-from .const import DOMAIN
-from .device import HDMISwitcherDataHandler
+from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
+from homeassistant.const import CONF_HOST, CONF_PORT
+import voluptuous as vol
+
+from .const import DEFAULT_HOST_SUGGESTION, DEFAULT_PORT, DOMAIN
+from .device import (
+    GofancoProphecyClient,
+    ProphecyConnectionError,
+    ProphecyResponseError,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
+_STEP_USER_SCHEMA = vol.Schema(
+    {
+        vol.Required(CONF_HOST): str,
+        vol.Optional(CONF_PORT, default=DEFAULT_PORT): vol.All(
+            vol.Coerce(int), vol.Range(min=1, max=65535)
+        ),
+    }
+)
 
-class HDMISwitcherConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    """Handle a config flow for HDMI Switcher."""
 
-    VERSION = 1
+class GofancoProphecyConfigFlow(ConfigFlow, domain=DOMAIN):
+    """Handle a config flow for Gofanco Prophecy."""
 
-    @staticmethod
-    def is_matching(entry: ConfigEntry, host: str, port: int) -> bool:
-        """Check if config entry matches the host and port."""
-        return (
-            entry.data.get("host") == host and entry.data.get("port") == port
-        )
+    VERSION = 2
 
-    async def async_step_user(self, user_input=None):
-        """Handle the initial step."""
-        errors = {}
+    async def async_step_user(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
+        """Handle the initial user step."""
+        errors: dict[str, str] = {}
 
         if user_input is not None:
-            ip_address = user_input.get("ip_address")
-            port = user_input.get("port", 80)
+            host = user_input[CONF_HOST]
+            port = user_input[CONF_PORT]
 
-            # Validate the IP address and port
-            if not await self._test_connection(ip_address, port):
-                errors["base"] = "cannot_connect"
-            else:
-                # Check for existing entries with the same IP and port
-                await self.async_set_unique_id(f"{ip_address}:{port}")
+            error = await self._async_try_connect(host, port)
+            if error is None:
+                await self.async_set_unique_id(f"{host}:{port}")
                 self._abort_if_unique_id_configured()
-
                 return self.async_create_entry(
-                    title=f"HDMI Switcher ({ip_address})", data=user_input
+                    title=f"HDMI Matrix ({host})",
+                    data={CONF_HOST: host, CONF_PORT: port},
                 )
+            errors["base"] = error
 
-        data_schema = vol.Schema(
-            {
-                vol.Required("ip_address"): str,
-                vol.Optional("port", default=80): int,
-            }
+        schema = self.add_suggested_values_to_schema(
+            _STEP_USER_SCHEMA,
+            {CONF_HOST: DEFAULT_HOST_SUGGESTION, CONF_PORT: DEFAULT_PORT},
         )
-
         return self.async_show_form(
-            step_id="user", data_schema=data_schema, errors=errors
+            step_id="user",
+            data_schema=schema,
+            errors=errors,
         )
 
-    async def _test_connection(self, ip_address, port):
-        """Test the connection to the HDMI Switcher."""
-        try:
-            data_handler = HDMISwitcherDataHandler(ip_address, port)
-            await self.hass.async_add_executor_job(data_handler.update)
-            return True
-        except (socket.error, json.JSONDecodeError, ValueError) as e:
-            _LOGGER.error("Connection test failed: %s", e)
-            return False
+    async def async_step_reconfigure(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
+        """Handle reconfiguration of an existing entry."""
+        entry = self._get_reconfigure_entry()
+        errors: dict[str, str] = {}
 
-    @staticmethod
-    @callback
-    def async_get_options_flow(config_entry: ConfigEntry):
-        """Handle creation of the options flow handler."""
-        return HDMISwitcherOptionsFlowHandler(config_entry)
-
-
-class HDMISwitcherOptionsFlowHandler(config_entries.OptionsFlow):
-    """Handle HDMI Switcher options."""
-
-    def __init__(self, config_entry: ConfigEntry) -> None:
-        """Initialize options flow."""
-        super().__init__()
-        self.config_entry = config_entry
-
-    async def async_step_init(self, user_input: dict | None = None) -> dict:
-        """Manage the HDMI Switcher options.
-
-        Args:
-            user_input: Configuration data from the frontend
-
-        Returns:
-            Configuration form
-        """
         if user_input is not None:
-            return self.async_create_entry(title="", data=user_input)
+            host = user_input[CONF_HOST]
+            port = user_input[CONF_PORT]
 
-        return self.async_show_form(step_id="init")
+            await self.async_set_unique_id(f"{host}:{port}")
+            self._abort_if_unique_id_mismatch(reason="wrong_device")
+
+            error = await self._async_try_connect(host, port)
+            if error is None:
+                return self.async_update_reload_and_abort(
+                    entry,
+                    data_updates={CONF_HOST: host, CONF_PORT: port},
+                )
+            errors["base"] = error
+
+        schema = self.add_suggested_values_to_schema(
+            _STEP_USER_SCHEMA,
+            {
+                CONF_HOST: entry.data.get(CONF_HOST, ""),
+                CONF_PORT: entry.data.get(CONF_PORT, DEFAULT_PORT),
+            },
+        )
+        return self.async_show_form(
+            step_id="reconfigure",
+            data_schema=schema,
+            errors=errors,
+        )
+
+    async def _async_try_connect(self, host: str, port: int) -> str | None:
+        """Probe the device; return an error key or None on success."""
+        client = GofancoProphecyClient(host, port)
+        try:
+            await client.async_get_state()
+        except ProphecyConnectionError as err:
+            _LOGGER.debug("Cannot connect to %s:%s - %s", host, port, err)
+            return "cannot_connect"
+        except ProphecyResponseError as err:
+            _LOGGER.debug("Invalid response from %s:%s - %s", host, port, err)
+            return "invalid_response"
+        except Exception:
+            # Anything not already surfaced as a Prophecy* error is unknown by
+            # definition; log the traceback and show a generic message to the
+            # user. This is the canonical HA config-flow pattern.
+            _LOGGER.exception("Unexpected error probing %s:%s", host, port)
+            return "unknown"
+        return None

@@ -1,0 +1,34 @@
+blueprint:
+  name: Gofanco Prophecy – Mute all outputs on event
+  description: >
+    Mute every output of the HDMI matrix when a trigger fires (door
+    opens, doorbell rings, phone calls incoming, bedtime routine, etc.).
+  domain: automation
+  source_url: https://github.com/gloriousdisaster/Home-Assistant-HDMI-PRO-Matrix/blob/main/blueprints/automation/gofanco_prophecy/mute_all.yaml
+  input:
+    trigger_event:
+      name: Trigger
+      description: What event should mute all outputs?
+      selector:
+        trigger:
+    mute_button:
+      name: Mute-all button
+      description: >
+        The mute-all button for your matrix. Defaults to
+        `button.hdmi_matrix_mute_all_outputs`.
+      default: button.hdmi_matrix_mute_all_outputs
+      selector:
+        entity:
+          filter:
+            - integration: gofanco_prophecy
+              domain: button
+
+mode: single
+max_exceeded: silent
+
+trigger: !input trigger_event
+
+action:
+  - service: button.press
+    target:
+      entity_id: !input mute_button

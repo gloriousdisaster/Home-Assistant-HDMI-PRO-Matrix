@@ -1,0 +1,46 @@
+{
+  "entity": {
+    "button": {
+      "mute_all": {
+        "default": "mdi:volume-off"
+      }
+    },
+    "media_player": {
+      "output_player": {
+        "default": "mdi:television"
+      }
+    },
+    "select": {
+      "output": {
+        "default": "mdi:video-input-hdmi"
+      },
+      "output_all": {
+        "default": "mdi:video-switch"
+      },
+      "preset_recall": {
+        "default": "mdi:folder-play"
+      }
+    },
+    "switch": {
+      "power": {
+        "default": "mdi:power"
+      }
+    },
+    "text": {
+      "input_name": {
+        "default": "mdi:rename"
+      },
+      "output_name": {
+        "default": "mdi:rename"
+      },
+      "preset_name": {
+        "default": "mdi:folder-edit"
+      }
+    }
+  },
+  "services": {
+    "save_preset": {
+      "service": "mdi:content-save-cog"
+    }
+  }
+}
